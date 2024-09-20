@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+ 
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autenticación de Usuarios</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- las siguientes etiquetas meta sirven para que el navegador
+	no cachee la página
+	-->
+	<meta http-equiv="Expires" content="0">
+	<meta http-equiv="Last-Modified" content="0">
+	<meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
+	<meta http-equiv="Pragma" content="no-cache">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+<body>
+
+  <div>
+    <input type="radio" id="existente" value="existente" />
+     <input type="radio" id="nuevo"  value="nuevo" />   
+  </div>
+  
+        <!-- Select de Alumnos -->
+        <div class="mb-4" id="alumnos">
+
+        </div>
+        
+        <!-- Select de cursos no matriculado -->
+        <div class="mb-4" id="cursos">
+
+        </div>
+        
+         <!-- Boton matricula -->
+        <div class="mb-4" id="matricula">
+
+        </div>
+
+º		//document.getElementById('#_1234').checked = true;
+
+	<script type="text/javascript">
+		$("#existente").checked(function(){			 
+				let url="listaAlumnos";	            
+	    		$.get(url,function(data,status){
+	    			var html="";
+	    			//recorremos JSON de respuesta y creamos una entrada HTML por cada resultado
+	    			$.each(data,function(i,e){ 
+	    	            html+="<label for="alumnosSelect" class="form-label">Selecciona un ALumno</label>
+	    	            <select id="alumnoSel" class="form-select">
+	    	                <option th:each="a:${alumnos}" th:value="${a.usuario}" th:text="${a.nombre}"></option>
+	    	            </select>
+	    			});
+	    			//volcamos el html completo en el div
+	    			$("#alumnos").html(html);
+	    		});
+					
+		});
+			
+	    $("#alumnoSel").change(function(){
+			let url="listaCursosNoMatriculado";
+			let params={"idUsuario":$("#alumnoSel").val()};
+    		$.get(url,params,function(data,status){
+    			var html="";
+    			//recorremos JSON de respuesta y creamos una entrada HTML por cada resultado
+    			$.each(data,function(i,e){ 
+    	            html+="<label for="alumnosSelect" class="form-label">Selecciona un ALumno</label>"
+    	            <select id="cursoSel" class="form-select">
+    	                <option th:each="a:${alumnos}" th:value="${a.usuario}" th:text="${a.nombre}"></option>
+    	            </select>
+    	            <input type="button" value="Matrícula" id="matricula">Matricula</input>"
+    			});
+    			//volcamos el html completo en el div
+    			$("#cursos").html(html);
+    		});
+			
+		 
+		});
+	    
+	    $("#cursoSel").change(function(){
+	 		let url="cursoNoMatriculado";
+			let params={"idCurso":$("#cursoSel").val()};
+    		$.get(url,params,function(data,status){
+    			var html="";
+    			html+="<input type="button" value="Matrícula" id="matricula">Matricula</input>"
+ 
+    			$("#matricula").html(html);
+    		});
+ 
+			
+	    $("#matricula").click(function(){
+	    	let url="matriculaAlumno";
+			let params={"idUsuario":$("#alumnoSel").val()};
+			params+={"idCurso":$("#cursoSel").val()};
+ 
+			$.post(url,params,function(data){
+				let mensaje;
+				if(data=="true"){
+					//le mandamos a la página de login
+					document.location.href="toInicio";
+				}else{
+					alert("No se ha podido matricular el alumno");
+				}
+				
+			});
+				
+				
+			});
+				
+				
+				
+				
+				
+				
+				
+			}
+	
+	</script>
+	
+	
+	
+	
+  
+</body>
+</html>

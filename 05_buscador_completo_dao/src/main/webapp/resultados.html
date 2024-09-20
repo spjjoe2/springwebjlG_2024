@@ -1,0 +1,16 @@
+<html lang="es" xmlns:th="http://www.thymeleaf.org/"> 
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	 
+	<div th:each="r:${request.resultados}">
+			<h2><a th:href="${r.url}" th:text="${r.url}"></a></h2>
+			<h4 th:text="${r.descripcion}"></h4>		
+	</div>
+	<a href="toInicio">Volver</a>
+</body>
+</html>
